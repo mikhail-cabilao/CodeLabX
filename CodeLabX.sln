@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeLabX", "CodeLabX\CodeLabX.csproj", "{BB95703C-3CE2-4341-9FFE-A0774EBACF1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB95703C-3CE2-4341-9FFE-A0774EBACF1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB95703C-3CE2-4341-9FFE-A0774EBACF1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB95703C-3CE2-4341-9FFE-A0774EBACF1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB95703C-3CE2-4341-9FFE-A0774EBACF1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88826766-4DE1-44D3-B5CA-1AA0571A349C}
+	EndGlobalSection
+EndGlobal
