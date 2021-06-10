@@ -1,5 +1,6 @@
 ﻿using CodeLabX.EntityFramework.Attributes;
 using CodeLabX.EntityFramework.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,14 @@ namespace CodeLabX.EntityFramework.Extensions
             list.Add(entity);
 
             return list.DeepInclude(navigationProperty, context).FirstOrDefault();
+        }
+
+        public static IEnumerable<T> Include<T>(this IQueryable<T> queries, string[] properties) where T : class
+        {
+            return properties.Aggregate(queries, (current, property) =>
+            {
+                return current.Include(property);
+            });
         }
 
         public static IEnumerable<T> DeepInclude<T>(this IEnumerable<T> queries, DataContext context) where T : class

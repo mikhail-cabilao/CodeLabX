@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>CodeLabX</Authors>
     <Company>CodeLabX</Company>
-    <Version>1.0.3</Version>
+    <Version>1.2.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

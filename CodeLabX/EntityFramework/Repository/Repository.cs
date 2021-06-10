@@ -8,9 +8,10 @@ namespace CodeLabX.EntityFramework.Repository
 {
     public interface IRepository
     {
+        DataContext DataContext();
         void SaveChanges();
         Task SaveChangesAsync();
-        Task<IEnumerable<T>> GetAsync<T>() where T : class, IEntityContext;
+        Task<IQueryable<T>> GetAsync<T>() where T : class, IEntityContext;
         Task AddAsync<T>(T entity) where T : class, IEntityContext;
         Task<T> UpdateAsync<T>(T entity) where T : class, IEntityContext;
         Task<T> UpsertAsync<T>(T entity) where T : class, IEntityContext;
@@ -26,6 +27,11 @@ namespace CodeLabX.EntityFramework.Repository
             this.dataContext = dataContext;
         }
 
+        public DataContext DataContext()
+        {
+            return dataContext as DataContext;
+        }
+
         public void SaveChanges()
         {
             dataContext.SaveChange();
@@ -36,7 +42,7 @@ namespace CodeLabX.EntityFramework.Repository
             await dataContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAsync<T>() where T: class, IEntityContext
+        public async Task<IQueryable<T>> GetAsync<T>() where T: class, IEntityContext
         {
             return await Task.FromResult(dataContext.Set<T>().Cast<T>());
         }
