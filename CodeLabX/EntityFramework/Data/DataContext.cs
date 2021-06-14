@@ -52,17 +52,17 @@ namespace CodeLabX.EntityFramework.Data
 
         private void AddDefaultInfo()
         {
-            var entries = ChangeTracker.Entries().Where(d => d.Entity is EntityContext
+            var entries = ChangeTracker.Entries().Where(d => d.Entity is IEntityContext
                 && (d.State == EntityState.Added || d.State == EntityState.Modified));
 
             foreach (var entry in entries)
             {
                 if (entry.State == EntityState.Added)
                 {
-                    ((EntityContext)entry.Entity).CreatedDate = DateTimeOffset.UtcNow;
+                    ((IEntityContext)entry.Entity).CreatedDate = DateTimeOffset.UtcNow;
                 }
 
-                ((EntityContext)entry.Entity).ModifiedData = DateTimeOffset.UtcNow;
+                ((IEntityContext)entry.Entity).ModifiedDate = DateTimeOffset.UtcNow;
             }
         }
 

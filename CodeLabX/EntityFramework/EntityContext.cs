@@ -8,7 +8,7 @@ namespace CodeLabX.EntityFramework
     {
         long Id { get; set; }
         DateTimeOffset CreatedDate { get; set; }
-        DateTimeOffset ModifiedData { get; set; }
+        DateTimeOffset ModifiedDate { get; set; }
     }
 
     public class EntityContext : IEntityContext
@@ -17,6 +17,6 @@ namespace CodeLabX.EntityFramework
         [Key]
         public long Id { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
-        public DateTimeOffset ModifiedData { get; set; }
+        public DateTimeOffset ModifiedDate { get; set; }
     }
 }

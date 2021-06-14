@@ -9,7 +9,7 @@ namespace CodeLabX.EntityFramework.Extensions
         {
             var properties = entiy.GetType()
                 .GetProperties()
-                .Where(d => d.GetValue(entiy) != null && d.Name != "Id")
+                .Where(d => d.GetValue(entiy) != null && !(d.Name == "Id" || d.Name == "CreatedDate" || d.Name == "ModifiedDate"))
                 .ToList();
 
             foreach (var property in properties)
