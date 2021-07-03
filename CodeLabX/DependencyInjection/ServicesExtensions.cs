@@ -9,19 +9,18 @@ using System;
 
 namespace CodeLabX.DependencyInjection
 {
-    public static class WrapperInject
+    public static class ServicesExtensions
     {
-        public static void ServicesInject(IServiceCollection services)
+        public static void AddXproServices(this IServiceCollection services)
         {
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IDataContext, DataContext>();
             services.AddScoped<ISqlDatabase, SqlDatabase>();
-            services.AddSingleton<ILogger, Logger<SqlDatabase>>();
+            services.AddLogging();
         }
 
-        public static void DbContextInject(IServiceCollection services, string database, Action<SqlServerDbContextOptionsBuilder> builder)
+        public static void AddXproDataContext(this IServiceCollection services, string database, Action<SqlServerDbContextOptionsBuilder> builder)
         {
-            Configuration.ConnectionString = database;
             services.AddDbContext<DataContext>(options => options.UseSqlServer(database, builder));
         }
     }

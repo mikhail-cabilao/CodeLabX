@@ -22,13 +22,13 @@ namespace CodeLabX.ActiveXData
 
     public class SqlDatabase : ISqlDatabase
     {
-        private readonly string connectionString;
-        private readonly ILogger logger;
+        private readonly string _connectionString;
+        private readonly ILogger _logger;
 
         public SqlDatabase(IRepository repository, ILogger logger)
         {
-            this.logger = logger;
-            connectionString = repository.DataContext().Database.GetDbConnection().ConnectionString;
+            _logger = logger;
+            _connectionString = repository.DataContext().Database.GetDbConnection().ConnectionString;
         }
 
         public async Task<IEnumerable<T>> EntitySet<T>(string query, Func<SqlDataReader, T> dataMapper)
@@ -37,9 +37,10 @@ namespace CodeLabX.ActiveXData
             try
             {
                 SqlDataReader reader;
-                logger.LogInformation($"Connection string: {connectionString}");
-                using (var con = new SqlConnection(connectionString))
+                _logger.LogInformation("Connecting...");
+                using (var con = new SqlConnection(_connectionString))
                 {
+                    _logger.LogInformation($"Connection string: {_connectionString}");
                     using (var command = new SqlCommand(query, con))
                     {
                         con.Open();
@@ -50,14 +51,14 @@ namespace CodeLabX.ActiveXData
                             foreach (var prop in typeof(T).GetProperties())
                                 property[prop.Name] = reader[prop.Name].ToString();
 
-                            var serialize = JsonConvert.SerializeObject(property);
-                            entitySet.Add(JsonConvert.DeserializeObject<T>(serialize));
+                            entitySet.Add(property.ToObject<T>());
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error Log: {ex.Message}");
                 throw new Exception(ex.Message);
             }
 
@@ -66,7 +67,9 @@ namespace CodeLabX.ActiveXData
 
         public void ExecuteStordProcNonQuery(string stordProc, List<SqlParameter> sqlParameters = null)
         {
-            using var con = new SqlConnection(connectionString);
+            _logger.LogInformation("Connecting...");
+            using var con = new SqlConnection(_connectionString);
+            _logger.LogInformation($"Connection string: {_connectionString}");
 
             using var command = new SqlCommand(stordProc, con);
             command.CommandType = CommandType.StoredProcedure;
@@ -80,29 +83,33 @@ namespace CodeLabX.ActiveXData
 
         public async Task<IEnumerable<T>> ExecuteStordProcQuery<T>(string stordProc, List<SqlParameter> sqlParameters = null)
         {
-            using var con = new SqlConnection(connectionString);
-
-            using var command = new SqlCommand(stordProc, con);
-            command.CommandType = CommandType.StoredProcedure;
-
-            if (sqlParameters is not null)
-                command.Parameters.AddRange(sqlParameters.ToArray());
-
-            con.Open();
-            var reader = command.ExecuteReader();
-
-            var entitySet = new List<T>();
-            while (reader.Read())
+            _logger.LogInformation("Connecting...");
+            using (var con = new SqlConnection(_connectionString))
             {
-                var property = new JObject();
-                foreach (var prop in typeof(T).GetProperties())
-                    property[prop.Name] = reader[prop.Name].ToString();
+                _logger.LogInformation($"Connection string: {_connectionString}");
+                using (var command = new SqlCommand(stordProc, con))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
 
-                var serialize = JsonConvert.SerializeObject(property);
-                entitySet.Add(JsonConvert.DeserializeObject<T>(serialize));
+                    if (sqlParameters is not null)
+                        command.Parameters.AddRange(sqlParameters.ToArray());
+
+                    con.Open();
+                    var reader = command.ExecuteReader();
+
+                    var entitySet = new List<T>();
+                    while (reader.Read())
+                    {
+                        var property = new JObject();
+                        foreach (var prop in typeof(T).GetProperties())
+                            property[prop.Name] = reader[prop.Name].ToString();
+
+                        entitySet.Add(property.ToObject<T>());
+                    }
+
+                    return await Task.FromResult(entitySet);
+                }
             }
-
-            return await Task.FromResult(entitySet);
         }
     }
 }

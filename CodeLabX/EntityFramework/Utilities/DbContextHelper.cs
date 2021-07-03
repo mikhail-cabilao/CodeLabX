@@ -14,7 +14,7 @@ namespace CodeLabX.EntityFramework.Utilities
             foreach (Type type in GetAllTypesImplementingBaseType(typeof(IEntityContext)))
             {
                 if (type == typeof(EntityContext)) continue;
-                var method = modelBuilder.GetType().GetMethod("Entity", new Type[] { });
+                var method = modelBuilder.GetType().GetMethod("Entity", Array.Empty<Type>());
                 var methodGen = method.MakeGenericMethod(type);
                 var invoke = methodGen.Invoke(modelBuilder, null) as EntityTypeBuilder;
                 
